@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API 연습</title>
+</head>
+
+<body>
+    <h1>OPEN API 연습해 보자!</h1>
+    <input id="bookName" value="" type="text">
+    <button id="search">검색하세요!</button>
+    <p></p>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $("#search").click(function () {
+                // 요청
+                $.ajax({
+                    method: "GET",   // 전송방식
+                    url: "https://dapi.kakao.com/v3/search/book?target=title",  // 전송주소
+                    data: { query: $("#bookName").val() },   // 보내는 데이터
+                    headers: { Authorization: "KakaoAK f39e0f3b0ac8a1d83d8cede4e1ab3416" }
+                })  // 응답
+                    .done(function (msg) {   // 응답이 msg라는 이름으로 들어옴
+                        console.log(msg.documents[0].title);
+                        console.log(msg.documents[0].thumbnail);
+                        let title_ = msg.documents[0].title;
+                        let thumbnail_ = msg.documents[0].thumbnail;
+                        $("p").append("<strong>" + title_ + "</strong>");
+                        $("p").append("<img src='" + thumbnail_ + "' />");
+                    });
+            });
+        })
+    </script>
+</body>
+
+</html>
